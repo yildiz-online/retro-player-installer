@@ -1,0 +1,35 @@
+sudo: required
+
+language: generic
+
+git:
+  depth: false
+
+dist:
+  xenial
+
+cache:
+  directories:
+    - $HOME/.m2
+
+services:
+  - docker
+
+before_install:
+  - docker pull moussavdb/build-java-native
+
+script:
+  - chmod 777 $PWD/src/main/scripts/linux64/build.sh
+  - chmod 777 $PWD/src/main/scripts/win64/build.sh
+  - chmod 777 $PWD/package.sh
+  - travis_retry docker run -v $PWD:/src -v $HOME/.m2:/root/.m2 moussavdb/build-java-native package.sh
+  
+deploy:
+  provider: releases
+  api_key: "$GITHUB_TOKEN"
+  file: "target/classes/win64/Play50hz-player.exe"
+  skip_cleanup: true
+  on:
+    branches:
+      only:
+        - master
