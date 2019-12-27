@@ -32,31 +32,50 @@ int main () {
     
     
     log << "Checking java availability" << std::endl;
+    std::cout << "Checking java availability" << std::endl;
     if(!isFileExists("java/bin/java.exe")) {
         log << "Java not found, dowloading it..." << std::endl;
-        downloadFile("java.tar.gz", "http://files.yildiz-games.be/java_jre_win64.tar.gz");
-        log << "Java download complete." << std::endl;
-        log << "Unpacking java.tar.gz..." << std::endl;
-        extract( "java.tar.gz", 1, 0);
-        log << "Unpack java.tar.gz complete." << std::endl;
+	std::cout << "Java not found, dowloading it..." << std::endl;
+        
+	downloadFile("java.tar.gz", "http://files.yildiz-games.be/java_jre_win64.tar.gz");
+        
+	log << "Java download complete." << std::endl;
+	std::cout << "Java download complete." << std::endl;    
+        
+	log << "Unpacking java.tar.gz..." << std::endl;
+	std::cout << "Unpacking java.tar.gz..." << std::endl;    
+        
+	extract( "java.tar.gz", 1, 0);
+        
+	log << "Unpack java.tar.gz complete." << std::endl;
+	std::cout << "Unpack java.tar.gz complete." << std::endl;
     } else {
         log << "Java found, checking version..." << std::endl;
+	std::cout << "Java found, checking version..." << std::endl;    
         downloadFile("expected-release", "http://files.yildiz-games.be/release");  
         if(!compareFiles("java/release", "expected-release")) {
 	    log << "Java version not matching, downloading the correct one..." << std::endl;
+	    std::cout << "Java version not matching, downloading the correct one..." << std::endl; 
             downloadFile("java.tar.gz", "http://files.yildiz-games.be/java_jre_win64.tar.gz");
             log << "Java download complete." << std::endl;
+            std::cout << "Java download complete." << std::endl;
             log << "Unpacking java.tar.gz..." << std::endl;
+            std::cout << "Unpacking java.tar.gz..." << std::endl; 
             extract( "java.tar.gz", 1, 0);
             log << "Unpack java.tar.gz complete." << std::endl;
+            std::cout << "Unpack java.tar.gz complete." << std::endl;    
         } else { 
 	    log << "Java version is correct." << std::endl;
+            std::cout << "Java version is correct." << std::endl;	
 	}
     }
     log << "Downloading last version of the application..." << std::endl;
+    std::cout << "Downloading last version of the application..." << std::endl;
     downloadFile("play50hz-player.jar", "http://play50hz-data.yildiz-games.be/player-launcher.jar");
     log << "Download last version of the launcher complete." << std::endl;
+    std::cout << "Download last version of the launcher complete." << std::endl;	
     log <<  "Starting play50hz..." << std::endl;
+    std::cout <<  "Starting play50hz..." << std::endl;	
     runApp();
     
     return 0;
