@@ -62,6 +62,40 @@
               </artifactItems>
             </configuration>
           </execution>
+          <execution>
+            <id>libarchive-unpack-linux64</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>be.yildiz-games</groupId>
+                  <artifactId>component-native-libarchive</artifactId>
+                  <outputDirectory>src/main/scripts/linux64/libarchive</outputDirectory>
+                  <includes>linux64/**/*.*</includes>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <execution>
+            <id>zlib-unpack-linux64</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>be.yildiz-games</groupId>
+                  <artifactId>component-native-zlib</artifactId>
+                  <outputDirectory>src/main/scripts/linux64/zlib</outputDirectory>
+                  <includes>linux64/**/*.*</includes>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
     </plugins>
