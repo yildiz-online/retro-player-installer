@@ -34,8 +34,8 @@ int main () {
     log << "Checking java availability" << std::endl;
     std::cout << "Checking java availability" << std::endl;
     if(!isFileExists("java/bin/java.exe")) {
-        log << "Java not found, dowloading it..." << std::endl;
-	std::cout << "Java not found, dowloading it..." << std::endl;
+        log << "Java not found, downloading it..." << std::endl;
+	std::cout << "Java not found, downloading it..." << std::endl;
         
 	downloadFile("java.tar.gz", "http://files.yildiz-games.be/java_jre_win64.tar.gz");
         
