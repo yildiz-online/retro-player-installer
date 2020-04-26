@@ -43,7 +43,7 @@ int main () {
 #ifdef __linux__ 
     if(!isFileExists("java/bin/java")) {
         log << "Java not found, dowloading it..." << std::endl;
-        std::cout << "Java not found, dowloading it..." << std::endl;
+        std::cout << "Java not found, downloading it..." << std::endl;
         downloadFile("java.tar.gz", "http://files.yildiz-games.be/java_jre_linux64.tar.gz");
 #elif _WIN32
     if(!isFileExists("java/bin/java.exe")) {
