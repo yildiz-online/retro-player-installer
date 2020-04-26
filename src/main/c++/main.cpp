@@ -42,13 +42,13 @@ int main () {
     std::cout << "Checking java availability" << std::endl;
 #ifdef __linux__ 
     if(!isFileExists("java/bin/java")) {
-        log << "Java not found, dowloading it..." << std::endl;
+        log << "Java not found, downloading it..." << std::endl;
         std::cout << "Java not found, downloading it..." << std::endl;
         downloadFile("java.tar.gz", "http://files.yildiz-games.be/java_jre_linux64.tar.gz");
 #elif _WIN32
     if(!isFileExists("java/bin/java.exe")) {
-        log << "Java not found, dowloading it..." << std::endl;
-        std::cout << "Java not found, dowloading it..." << std::endl;
+        log << "Java not found, downloading it..." << std::endl;
+        std::cout << "Java not found, downloading it..." << std::endl;
         downloadFile("java.tar.gz", "http://files.yildiz-games.be/java_jre_win64.tar.gz");
 #endif     
 	log << "Java download complete." << std::endl;
@@ -89,13 +89,13 @@ int main () {
             std::cout << "Java version is correct." << std::endl;	
 	}
     }
-    log << "Downloading last version of the application..." << std::endl;
-    std::cout << "Downloading last version of the application..." << std::endl;
+    log << "Downloading latest version of the application..." << std::endl;
+    std::cout << "Downloading latest version of the application..." << std::endl;
     downloadFile("play50hz-player.jar", "http://play50hz-data.yildiz-games.be/player-launcher.jar");
-    log << "Download last version of the launcher complete." << std::endl;
-    std::cout << "Download last version of the launcher complete." << std::endl;	
-    log <<  "Starting play50hz..." << std::endl;
-    std::cout <<  "Starting play50hz..." << std::endl;	
+    log << "Download latest version of the launcher complete." << std::endl;
+    std::cout << "Download latest version of the launcher complete." << std::endl;	
+    log <<  "Starting Play50hz..." << std::endl;
+    std::cout <<  "Starting Play50hz..." << std::endl;	
     runApp();
     
     return 0;
