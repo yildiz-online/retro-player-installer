@@ -1,4 +1,11 @@
-#include <winsock2.h>
+
+#ifdef __linux__ 
+    #include <arpa/inet.h>
+    #include <unistd.h>
+#elif _WIN32
+    #include <winsock2.h>
+#endif
+#include <string.h>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -17,13 +24,13 @@ int compareFiles(const std::string& file1, const std::string file2);
 
 void runApp();
 
-static void	errmsg(const char *);
-static void	extract(const char *filename, int do_extract, int flags);
-static void	fail(const char *, const char *, int);
-static int	copy_data(struct archive *, struct archive *);
+void warn(const char *f, const char *m);
 
-static void	usage(void);
-static void	warn(const char *, const char *);
+void fail(const char *f, const char *m, int r);
+
+static void	extract(const char *filename, int do_extract, int flags);
+
+static int	copy_data(struct archive *, struct archive *);
 
 static int verbose = 0;
 
@@ -33,12 +40,17 @@ int main () {
     
     log << "Checking java availability" << std::endl;
     std::cout << "Checking java availability" << std::endl;
+#ifdef __linux__ 
+    if(!isFileExists("java/bin/java")) {
+        log << "Java not found, dowloading it..." << std::endl;
+        std::cout << "Java not found, dowloading it..." << std::endl;
+        downloadFile("java.tar.gz", "http://files.yildiz-games.be/java_jre_linux64.tar.gz");
+#elif _WIN32
     if(!isFileExists("java/bin/java.exe")) {
-        log << "Java not found, downloading it..." << std::endl;
-	std::cout << "Java not found, downloading it..." << std::endl;
-        
-	downloadFile("java.tar.gz", "http://files.yildiz-games.be/java_jre_win64.tar.gz");
-        
+        log << "Java not found, dowloading it..." << std::endl;
+        std::cout << "Java not found, dowloading it..." << std::endl;
+        downloadFile("java.tar.gz", "http://files.yildiz-games.be/java_jre_win64.tar.gz");
+#endif     
 	log << "Java download complete." << std::endl;
 	std::cout << "Java download complete." << std::endl;    
         
@@ -52,11 +64,19 @@ int main () {
     } else {
         log << "Java found, checking version..." << std::endl;
 	std::cout << "Java found, checking version..." << std::endl;    
-        downloadFile("expected-release", "http://files.yildiz-games.be/release");  
+#ifdef __linux__ 
+    downloadFile("expected-release", "http://files.yildiz-games.be/release_linux64");  
+#elif _WIN32
+    downloadFile("expected-release", "http://files.yildiz-games.be/release");  
+#endif
         if(!compareFiles("java/release", "expected-release")) {
 	    log << "Java version not matching, downloading the correct one..." << std::endl;
 	    std::cout << "Java version not matching, downloading the correct one..." << std::endl; 
-            downloadFile("java.tar.gz", "http://files.yildiz-games.be/java_jre_win64.tar.gz");
+#ifdef __linux__ 
+    downloadFile("java.tar.gz", "http://files.yildiz-games.be/java_jre_linux64.tar.gz");
+#elif _WIN32
+    downloadFile("java.tar.gz", "http://files.yildiz-games.be/java_jre_win64.tar.gz");
+#endif
             log << "Java download complete." << std::endl;
             std::cout << "Java download complete." << std::endl;
             log << "Unpacking java.tar.gz..." << std::endl;
@@ -81,17 +101,27 @@ int main () {
     return 0;
 }
 
-std::string workingdir()
-{
-    char buf[MAX_PATH];
-    GetCurrentDirectoryA(MAX_PATH, buf);
-    return std::string(buf);
-}
+#ifdef __linux__ 
+    std::string workingdir() {
+        return get_current_dir_name();
+    }
 
-void runApp() {
-    std::string cmd = "\"" + workingdir() +  "/java/bin/java.exe" + "\"" + " -jar play50hz-player.jar";
-    system(cmd.c_str());
-}
+    void runApp() {
+        std::string cmd = "\"" + workingdir() +  "/java/bin/java" + "\"" + " -jar play50hz-server.jar";
+        system(cmd.c_str());
+    } 
+#elif _WIN32
+    std::string workingdir() {
+        char buf[MAX_PATH];
+        GetCurrentDirectoryA(MAX_PATH, buf);
+        return std::string(buf);
+    }
+
+    void runApp() {
+        std::string cmd = "\"" + workingdir() +  "/java/bin/java.exe" + "\"" + " -jar play50hz-server.jar";
+        system(cmd.c_str());
+    }
+#endif
 
 static size_t writeData(void *ptr, size_t size, size_t nmemb, void *stream)
 {
