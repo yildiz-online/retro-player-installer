@@ -107,7 +107,7 @@ int main () {
     }
 
     void runApp() {
-        std::string cmd = "\"" + workingdir() +  "/java/bin/java" + "\"" + " -jar play50hz-server.jar";
+        std::string cmd = "\"" + workingdir() +  "/java/bin/java" + "\"" + " -jar play50hz-player.jar";
         system(cmd.c_str());
     } 
 #elif _WIN32
@@ -118,10 +118,11 @@ int main () {
     }
 
     void runApp() {
-        std::string cmd = "\"" + workingdir() +  "/java/bin/java.exe" + "\"" + " -jar play50hz-server.jar";
+        std::string cmd = "\"" + workingdir() +  "/java/bin/java.exe" + "\"" + " -jar play50hz-player.jar";
         system(cmd.c_str());
     }
 #endif
+
 
 static size_t writeData(void *ptr, size_t size, size_t nmemb, void *stream)
 {
@@ -235,35 +236,16 @@ copy_data(struct archive *ar, struct archive *aw)
 	}
 }
 
-
-static void
-errmsg(const char *m)
+void warn(const char *f, const char *m)
 {
-	write(2, m, strlen(m));
+	log << f << ":" << m << std::endl;
+        std::cout << f << ":" << m << std::endl;
 }
 
-static void
-warn(const char *f, const char *m)
-{
-	errmsg(f);
-	errmsg(" failed: ");
-	errmsg(m);
-	errmsg("\n");
-}
-
-static void
-fail(const char *f, const char *m, int r)
+void fail(const char *f, const char *m, int r)
 {
 	warn(f, m);
 	exit(r);
-}
-
-static void
-usage(void)
-{
-	const char *m = "Usage: untar [-tvx] [-f file] [file]\n";
-	errmsg(m);
-	exit(1);
 }
 
 int compareFiles(const std::string& file1, const std::string file2) {
