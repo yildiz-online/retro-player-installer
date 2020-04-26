@@ -21,8 +21,5 @@ file(
 add_executable(Play50hz-player ../../c++/main.cpp)
 
 
-target_link_libraries(Play50hz-player ${CMAKE_SOURCE_DIR}/libarchive/linux64/lib/libarchive_static.a)
-target_link_libraries(Play50hz-player ${CMAKE_SOURCE_DIR}/zlib/linux64/lib/libzlibstatic.a)
-target_link_libraries(Play50hz-player wsock32)
-target_link_libraries(Play50hz-player ws2_32)
-target_link_libraries(Play50hz-player pthread)
+target_link_libraries(Play50hz-player ${CMAKE_SOURCE_DIR}/libarchive/linux64/lib/libarchive.a)
+target_link_libraries(Play50hz-player ${CMAKE_SOURCE_DIR}/zlib/linux64/lib/libz.a)
