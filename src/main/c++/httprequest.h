@@ -582,7 +582,7 @@ namespace http
                     {
                         response.body.insert(response.body.end(), responseData.begin(), responseData.end());
                         responseData.clear();
-			    std::cout <<" non chunked progress: " << response.body.size() << ":" << contentLength << std::endl;
+			    std::cout << "\r" <<" Download progress: " << response.body.size() << " on " << contentLength << " (" << (response.body.size()  / contentLength) * 100 << "%)";
 
                         // got the whole content
                         if (contentLengthReceived && response.body.size() >= contentLength) {
