@@ -14,13 +14,17 @@
 #include <archive_entry.h>
 #include "httprequest.h"
 
+#ifdef __linux__
+    const std::string javaUrl = std::string("http://files.yildiz-games.be/java_jre_linux64.tar.gz");
+    const std::string javaVersionUrl = std::string("http://files.yildiz-games.be/release_linux64");
+#elif _WIN32
+    const std::string javaUrl = std::string("http://files.yildiz-games.be/java_jre_win64.tar.gz");
+    const std::string javaVersionUrl = std::string("http://files.yildiz-games.be/release");
+#endif
+
 std::ofstream log;
 
 void print(const std::string& message);
-
-const std::string& getJavaUrl();
-
-const std::string& getJavaVersionUrl();
 
 bool isJavaExists();
 
@@ -48,17 +52,17 @@ int main () {
     if(!isJavaExists()) {
 	print("Play50hz has its own java virtual machine, different from the one you mave have already installed manually.");
         print("Play50hz java specific version not found, downloading it..");
-        downloadFile("java.tar.gz", getJavaUrl()); 
+        downloadFile("java.tar.gz", javaUrl); 
 	print("Java download complete.");   
 	print("Unpacking java.tar.gz...");    
 	extract( "java.tar.gz", 1, 0);
 	print("Unpack java.tar.gz complete.");
     } else {
         print("Java found, checking version...");    
-        downloadFile("expected-release", getJavaVersionUrl());  
+        downloadFile("expected-release", javaVersionUrl);  
         if(!compareFiles("java/release", "expected-release")) {
 	    print("Play50hz java version not matching, downloading the latest one..."); 
-            downloadFile("java.tar.gz", getJavaUrl()); 
+            downloadFile("java.tar.gz", javaUrl); 
             print("Java download complete.");
             print("Unpacking java.tar.gz..."); 
             extract( "java.tar.gz", 1, 0);
