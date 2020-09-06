@@ -18,9 +18,9 @@ std::ofstream log;
 
 void print(const std::string& message);
 
-const std::string& getJavaUrl() const;
+const std::string& getJavaUrl();
 
-const std::string& getJavaVersionUrl() const;
+const std::string& getJavaVersionUrl();
 
 bool isJavaExists();
 
@@ -110,7 +110,7 @@ void print(const std::string& message) {
     std::cout << message << std::endl;	
 }
 	
-const std::string& getJavaUrl() const {
+const std::string& getJavaUrl() {
     #ifdef __linux__
 	return "http://files.yildiz-games.be/java_jre_linux64.tar.gz";
     #elif _WIN32
@@ -118,7 +118,7 @@ const std::string& getJavaUrl() const {
     #endif
 }
 
-const std::string& getJavaVersionUrl() const {
+const std::string& getJavaVersionUrl() {
     #ifdef __linux__ 
         return "http://files.yildiz-games.be/release_linux64";  
     #elif _WIN32
