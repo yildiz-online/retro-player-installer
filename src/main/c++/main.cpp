@@ -45,7 +45,7 @@ static int verbose = 0;
 int main () {
     log.open("retro-player.log", std::ios::out | std::ios::trunc );
     print("Checking java availability");
-    if(!javaExists()) {
+    if(!isJavaExists()) {
 	print("Play50hz has its own java virtual machine, different from the one you mave have already installed manually.");
         print("Play50hz java specific version not found, downloading it..");
         downloadFile("java.tar.gz", getJavaUrl()); 
