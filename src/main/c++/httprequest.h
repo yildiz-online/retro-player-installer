@@ -530,8 +530,6 @@ namespace http
 
                 if (parsedHeaders)
                 {
-			std::cout <<"CONTENT LENGTH RECEIVED: " << contentLengthReceived << std::endl;
-			std::cout <<"CHUNKED RESP: " << chunkedResponse << std::endl;
                     // Content-Length must be ignored if Transfer-Encoding is received
                     if (chunkedResponse)
                     {
@@ -586,9 +584,10 @@ namespace http
                         responseData.clear();
 
                         // got the whole content
-                        if (contentLengthReceived && response.body.size() >= contentLength)
-				std::cout <<"progress: " << response.body.size() << ":" << contentLength << std::endl;
+                        if (contentLengthReceived && response.body.size() >= contentLength) {
+			    std::cout <<"progress: " << response.body.size() << ":" << contentLength << std::endl;
                             break;
+			}
                     }
                 }
             }
