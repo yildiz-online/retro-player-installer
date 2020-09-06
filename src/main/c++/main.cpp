@@ -17,16 +17,16 @@
 #ifdef __linux__
     const std::string javaUrl = std::string("http://files.yildiz-games.be/java_jre_linux64.tar.gz");
     const std::string javaVersionUrl = std::string("http://files.yildiz-games.be/release_linux64");
+    const std::string javaFile = std::string("java/bin/java");
 #elif _WIN32
     const std::string javaUrl = std::string("http://files.yildiz-games.be/java_jre_win64.tar.gz");
     const std::string javaVersionUrl = std::string("http://files.yildiz-games.be/release");
+    const std::string javaFile = std::string("java/bin/java.exe");
 #endif
 
 std::ofstream log;
 
 void print(const std::string& message);
-
-bool isJavaExists();
 
 bool isFileExists (const std::string& name);
 
@@ -49,7 +49,7 @@ static int verbose = 0;
 int main () {
     log.open("retro-player.log", std::ios::out | std::ios::trunc );
     print("Checking java availability");
-    if(!isJavaExists()) {
+    if(!isFileExists(javaFile)) {
 	print("Play50hz has its own java virtual machine, different from the one you mave have already installed manually.");
         print("Play50hz java specific version not found, downloading it..");
         downloadFile("java.tar.gz", javaUrl); 
@@ -113,22 +113,6 @@ void print(const std::string& message) {
     log << message << std::endl;
     std::cout << message << std::endl;	
 }
-	
-const std::string& getJavaUrl() {
-    #ifdef __linux__
-	return std::string("http://files.yildiz-games.be/java_jre_linux64.tar.gz");
-    #elif _WIN32
-	return std::string("http://files.yildiz-games.be/java_jre_win64.tar.gz");
-    #endif
-}
-
-const std::string& getJavaVersionUrl() {
-    #ifdef __linux__ 
-        return std::string("http://files.yildiz-games.be/release_linux64");  
-    #elif _WIN32
-        return std::string("http://files.yildiz-games.be/release");  
-    #endif
-}
 
 void downloadFile(const std::string& fileName, const std::string& url) {
     print("Started the download, please wait."); 
@@ -150,19 +134,8 @@ inline bool isFileExists (const std::string& name) {
         return false;
     }   
 }
-	
-inline bool isJavaExists() {
-    #ifdef __linux__ 
-        return isFileExists("java/bin/java");
-    #elif _WIN32
-        return isFileExists("java/bin/java.exe");
-    #endif
-    return false;    
-}
 
-static void
-extract(const char *filename, int do_extract, int flags)
-{
+static void extract(const char *filename, int do_extract, int flags) {
 	struct archive *a;
 	struct archive *ext;
 	struct archive_entry *entry;
@@ -214,9 +187,7 @@ extract(const char *filename, int do_extract, int flags)
   	archive_write_free(ext);
 }
 
-static int
-copy_data(struct archive *ar, struct archive *aw)
-{
+static int copy_data(struct archive *ar, struct archive *aw) {
 	int r;
 	const void *buff;
 	size_t size;
