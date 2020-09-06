@@ -453,6 +453,7 @@ namespace http
             for (;;)
             {
                 const auto size = recv(socket, reinterpret_cast<char*>(tempBuffer), sizeof(tempBuffer), flags);
+		    std::cout << "SIZE: " << size << std::endl;
 
                 if (size < 0)
                     throw std::system_error(getLastError(), std::system_category(), "Failed to read data from " + domain + ":" + port);
