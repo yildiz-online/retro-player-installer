@@ -1,10 +1,3 @@
-
-#ifdef __linux__ 
-    #include <arpa/inet.h>
-    #include <unistd.h>
-#elif _WIN32
-    #include <winsock2.h>
-#endif
 #include <string.h>
 #include <iostream>
 #include <fstream>
@@ -15,10 +8,15 @@
 #include "httprequest.h"
 
 #ifdef __linux__
+    #include <arpa/inet.h>
+    #include <unistd.h>
+
     const std::string javaUrl = std::string("http://files.yildiz-games.be/java_jre_linux64.tar.gz");
     const std::string javaVersionUrl = std::string("http://files.yildiz-games.be/release_linux64");
     const std::string javaFile = std::string("java/bin/java");
 #elif _WIN32
+    #include <winsock2.h>
+
     const std::string javaUrl = std::string("http://files.yildiz-games.be/java_jre_win64.tar.gz");
     const std::string javaVersionUrl = std::string("http://files.yildiz-games.be/release");
     const std::string javaFile = std::string("java/bin/java.exe");
@@ -33,6 +31,8 @@ bool isFileExists (const std::string& name);
 void downloadFile(const std::string& fileName, const std::string& url);
 
 int compareFiles(const std::string& file1, const std::string file2);
+
+void getJava();
 
 void runApp();
 
@@ -52,21 +52,13 @@ int main () {
     if(!isFileExists(javaFile)) {
 	print("Play50hz has its own java virtual machine, different from the one you mave have already installed manually.");
         print("Play50hz java specific version not found, downloading it..");
-        downloadFile("java.tar.gz", javaUrl); 
-	print("Java download complete.");   
-	print("Unpacking java.tar.gz...");    
-	extract( "java.tar.gz", 1, 0);
-	print("Unpack java.tar.gz complete.");
+        getJava();
     } else {
         print("Java found, checking version...");    
         downloadFile("expected-release", javaVersionUrl);  
         if(!compareFiles("java/release", "expected-release")) {
 	    print("Play50hz java version not matching, downloading the latest one..."); 
-            downloadFile("java.tar.gz", javaUrl); 
-            print("Java download complete.");
-            print("Unpacking java.tar.gz..."); 
-            extract( "java.tar.gz", 1, 0);
-            print("Unpack java.tar.gz complete.");    
+            getJava();
         } else { 
 	    print("Java version is correct.");	
 	}
@@ -80,33 +72,32 @@ int main () {
     return 0;
 }
 
+void getJava() {
+    downloadFile("java.tar.gz", javaUrl); 
+    print("Java download complete.");   
+    print("Unpacking java.tar.gz...");    
+    extract( "java.tar.gz", 1, 0);
+    print("Unpack java.tar.gz complete.");	
+}
+
+std::string workingdir() {
 #ifdef __linux__ 
-    std::string workingdir() {
-        return get_current_dir_name();
-    }
-
-    void runApp() {
-        std::string cmd = "\"" + workingdir() +  "/java/bin/java" + "\"" + " -jar play50hz-player.jar";
-        system(cmd.c_str());
-    } 
+    return get_current_dir_name();
 #elif _WIN32
-    std::string workingdir() {
-        char buf[MAX_PATH];
-        GetCurrentDirectoryA(MAX_PATH, buf);
-        return std::string(buf);
-    }
-
-    void runApp() {
-        std::string cmd = "\"" + workingdir() +  "/java/bin/java.exe" + "\"" + " -jar play50hz-player.jar";
-        system(cmd.c_str());
-    }
+    char buf[MAX_PATH];
+    GetCurrentDirectoryA(MAX_PATH, buf);
+    return std::string(buf);
 #endif
+}
 
+void runApp() {
+    std::string cmd = "\"" + workingdir() +  "/" + javaFile + "\"" + " -jar play50hz-player.jar";
+    system(cmd.c_str());
+}
 
-static size_t writeData(void *ptr, size_t size, size_t nmemb, void *stream)
-{
-  size_t written = fwrite(ptr, size, nmemb, (FILE *)stream);
-  return written;
+static size_t writeData(void *ptr, size_t size, size_t nmemb, void *stream) {
+    size_t written = fwrite(ptr, size, nmemb, (FILE *)stream);
+    return written;
 }
 	
 void print(const std::string& message) {
@@ -136,10 +127,10 @@ inline bool isFileExists (const std::string& name) {
 }
 
 static void extract(const char *filename, int do_extract, int flags) {
-	struct archive *a;
-	struct archive *ext;
-	struct archive_entry *entry;
-	int r;
+    struct archive *a;
+    struct archive *ext;
+    struct archive_entry *entry;
+    int r;
 
 	a = archive_read_new();
 	ext = archive_write_disk_new();
