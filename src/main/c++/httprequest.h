@@ -582,12 +582,11 @@ namespace http
                     {
                         response.body.insert(response.body.end(), responseData.begin(), responseData.end());
                         responseData.clear();
+			    std::cout <<" non chunked progress: " << response.body.size() << ":" << contentLength << std::endl;
 
                         // got the whole content
                         if (contentLengthReceived && response.body.size() >= contentLength) {
                             break;
-			} else if(contentLengthReceived && response.body.size() >= contentLength) {
-				std::cout <<"progress: " << response.body.size() << ":" << contentLength << std::endl;
 			}
                     }
                 }
