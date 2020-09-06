@@ -586,6 +586,7 @@ namespace http
 
                         // got the whole content
                         if (contentLengthReceived && response.body.size() >= contentLength) {
+			    std::cout << std::endl;
                             break;
 			}
                     }
