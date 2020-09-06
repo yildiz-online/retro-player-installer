@@ -106,7 +106,6 @@ void print(const std::string& message) {
 }
 
 void downloadFile(const std::string& fileName, const std::string& url) {
-    print("Started the download, please wait."); 
     try {
         http::Request request(url);
         const http::Response response = request.send("GET");
