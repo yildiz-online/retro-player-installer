@@ -112,17 +112,17 @@ void print(const std::string& message) {
 	
 const std::string& getJavaUrl() {
     #ifdef __linux__
-	return "http://files.yildiz-games.be/java_jre_linux64.tar.gz";
+	return std::string("http://files.yildiz-games.be/java_jre_linux64.tar.gz");
     #elif _WIN32
-	return "http://files.yildiz-games.be/java_jre_win64.tar.gz";
+	return std::string("http://files.yildiz-games.be/java_jre_win64.tar.gz");
     #endif
 }
 
 const std::string& getJavaVersionUrl() {
     #ifdef __linux__ 
-        return "http://files.yildiz-games.be/release_linux64";  
+        return std::string("http://files.yildiz-games.be/release_linux64");  
     #elif _WIN32
-        return "http://files.yildiz-games.be/release";  
+        return std::string("http://files.yildiz-games.be/release");  
     #endif
 }
 
