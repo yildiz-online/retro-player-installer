@@ -7,7 +7,7 @@
 #include <archive_entry.h>
 #include "httprequest.h"
 
-#idef __aarch64__
+#ifdef __aarch64__
     #include <arpa/inet.h>
     #include <unistd.h>
 
@@ -29,7 +29,7 @@
     const std::string javaFile = std::string("java/bin/java.exe");
 #endif
 
-std::ofstream log;
+std::ofstream logger;
 
 void print(const std::string& message);
 
@@ -41,7 +41,7 @@ int compareFiles(const std::string& file1, const std::string file2);
 
 void getJava();
 
-void runApp();
+int runApp();
 
 void warn(const char *f, const char *m);
 
@@ -54,29 +54,27 @@ static int	copy_data(struct archive *, struct archive *);
 static int verbose = 0;
 
 int main () {
-    log.open("retro-player.log", std::ios::out | std::ios::trunc );
+    logger.open("retro-player.log", std::ios::out | std::ios::trunc );
     print("Checking java availability");
     if(!isFileExists(javaFile)) {
-	print("Play50hz has its own java virtual machine, different from the one you mave have already installed manually.");
+	    print("Play50hz has its own java virtual machine, different from the one you mave have already installed manually.");
         print("Play50hz java specific version not found, downloading it..");
         getJava();
     } else {
         print("Java found, checking version...");    
         downloadFile("expected-release", javaVersionUrl);  
         if(!compareFiles("java/release", "expected-release")) {
-	    print("Play50hz java version not matching, downloading the latest one..."); 
+	        print("Play50hz java version not matching, downloading the latest one..."); 
             getJava();
         } else { 
-	    print("Java version is correct.");	
-	}
+	        print("Java version is correct.");	
+	    }
     }
     print("Downloading latest version of the application...");
     downloadFile("play50hz-player.jar", "http://files.yildiz-games.be/play50hz/launcher/player-launcher.jar");
     print("Download latest version of the launcher complete.");	
     print("Starting Play50hz...");	
-    runApp();
-    
-    return 0;
+    return runApp();
 }
 
 void getJava() {
@@ -97,18 +95,13 @@ std::string workingdir() {
 #endif
 }
 
-void runApp() {
+int runApp() {
     std::string cmd = "\"" + workingdir() +  "/" + javaFile + "\"" + " -jar play50hz-player.jar";
-    system(cmd.c_str());
-}
-
-static size_t writeData(void *ptr, size_t size, size_t nmemb, void *stream) {
-    size_t written = fwrite(ptr, size, nmemb, (FILE *)stream);
-    return written;
+    return system(cmd.c_str());
 }
 	
 void print(const std::string& message) {
-    log << message << std::endl;
+    logger << message << std::endl;
     std::cout << message << std::endl;	
 }
 
@@ -157,9 +150,9 @@ static void extract(const char *filename, int do_extract, int flags) {
 			fail("archive_read_next_header()",
 			    archive_error_string(a), 1);
 		if (verbose && do_extract)
-			log << "x ";
+			logger << "x ";
 		if (verbose || !do_extract)
-			log << archive_entry_pathname(entry);
+			logger << archive_entry_pathname(entry);
 		if (do_extract) {
 			r = archive_write_header(ext, entry);
 			if (r != ARCHIVE_OK)
@@ -175,7 +168,7 @@ static void extract(const char *filename, int do_extract, int flags) {
 
 		}
 		if (verbose || !do_extract)
-			log << std::endl;
+			logger << std::endl;
 	}
 	archive_read_close(a);
 	archive_read_free(a);
@@ -209,35 +202,35 @@ static int copy_data(struct archive *ar, struct archive *aw) {
 	}
 }
 
-void warn(const char *f, const char *m)
-{
-	log << f << ":" << m << std::endl;
-        std::cout << f << ":" << m << std::endl;
+void warn(const char *f, const char *m) {
+    logger << f << ":" << m << std::endl;
+    std::cout << f << ":" << m << std::endl;
 }
 
-void fail(const char *f, const char *m, int r)
-{
-	warn(f, m);
-	exit(r);
+void fail(const char *f, const char *m, int r) {
+    warn(f, m);
+    exit(r);
 }
 
 int compareFiles(const std::string& file1, const std::string file2) {
     std::fstream f1, f2;
-    char name[20], c1, c2;
-    int flag=3;
+    char c1, c2;
+    int flag = 3;
 
     f1.open(file1, std::ios::in);
     f2.open(file2, std::ios::in);
-
+	int x = 0;
     while(1){
+	x++;
         c1=f1.get();
         c2=f2.get();
         if(c1!=c2){
             flag=0;
             break;
         }
-        if((c1==EOF)||(c2==EOF))
+        if((c1==EOF)||(c2==EOF) || ((int)c1==255) || ((int)c2==255)) {
             break;
+	}
     }
     f1.close();
     f2.close();
