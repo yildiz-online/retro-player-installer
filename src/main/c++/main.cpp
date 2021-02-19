@@ -7,7 +7,14 @@
 #include <archive_entry.h>
 #include "httprequest.h"
 
-#ifdef __linux__
+#idef __aarch64__
+    #include <arpa/inet.h>
+    #include <unistd.h>
+
+    const std::string javaUrl = std::string("http://files.yildiz-games.be/java_jre_linuxarm64.tar.gz");
+    const std::string javaVersionUrl = std::string("http://files.yildiz-games.be/release_linuxarm64");
+    const std::string javaFile = std::string("java/bin/java");
+#elif __linux__
     #include <arpa/inet.h>
     #include <unistd.h>
 
