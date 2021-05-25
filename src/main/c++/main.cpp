@@ -57,14 +57,14 @@ int main () {
     logger.open("retro-player.log", std::ios::out | std::ios::trunc );
     print("Checking java availability");
     if(!isFileExists(javaFile)) {
-	    print("Play50hz has its own java virtual machine, different from the one you mave have already installed manually.");
-        print("Play50hz java specific version not found, downloading it..");
+	    print("PXL has its own java virtual machine, different from the one you mave have already installed manually.");
+        print("PXL java specific version not found, downloading it..");
         getJava();
     } else {
         print("Java found, checking version...");    
         downloadFile("expected-release", javaVersionUrl);  
         if(!compareFiles("java/release", "expected-release")) {
-	        print("Play50hz java version not matching, downloading the latest one..."); 
+	        print("PXL java version not matching, downloading the latest one..."); 
             getJava();
         } else { 
 	        print("Java version is correct.");	
@@ -73,7 +73,7 @@ int main () {
     print("Downloading latest version of the application...");
     downloadFile("play50hz-player.jar", "http://files.yildiz-games.be/play50hz/launcher/player-launcher.jar");
     print("Download latest version of the launcher complete.");	
-    print("Starting Play50hz...");	
+    print("Starting PXL...");	
     return runApp();
 }
 
