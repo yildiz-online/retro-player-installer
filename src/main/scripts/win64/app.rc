@@ -10,12 +10,12 @@ BEGIN
         BLOCK "040904E4"
         BEGIN
             VALUE "CompanyName",      "Yildiz-Games"
-            VALUE "FileDescription",  "Play50hz player launcher"
+            VALUE "FileDescription",  "Pxl installer"
             VALUE "FileVersion",      "1,0,0,0"
             VALUE "InternalName",     "retro-player-installer"
             VALUE "LegalCopyright",   "Copyright (c) 2019 Gregory Van den Borre"
-            VALUE "OriginalFilename", "Play50hz-player.exe"
-            VALUE "ProductName",      "Play 50 hz player"
+            VALUE "OriginalFilename", "Pxl.exe"
+            VALUE "ProductName",      "Pxl"
             VALUE "ProductVersion",   "1,0,0,0"
         END
     END
