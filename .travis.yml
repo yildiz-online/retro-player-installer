@@ -28,8 +28,8 @@ deploy:
   provider: releases
   api_key: "$GITHUB_TOKEN"
   file:
-    - "target/classes/win64/Play50hz-player.exe"
-    - "target/classes/linux64/Play50hz-player"
+    - "target/classes/win64/Pxl.exe"
+    - "target/classes/linux64/Pxl"
   skip_cleanup: true
   on:
     branches:
