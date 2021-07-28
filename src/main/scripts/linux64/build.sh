@@ -9,6 +9,6 @@ make
 r1=$?
 
 mkdir -p ../../../../target/classes/linux64/
-cp Play50hz-player ../../../../target/classes/linux64/Play50hz-player
+cp Pxl ../../../../target/classes/linux64/Pxl
 
 exit ${r1}

@@ -9,6 +9,6 @@ make
 r1=$?
 
 mkdir -p ../../../../target/classes/win64/
-cp Play50hz-player.exe ../../../../target/classes/win64/Play50hz-player.exe
+cp Pxl.exe ../../../../target/classes/win64/Pxl.exe
 
 exit ${r1}

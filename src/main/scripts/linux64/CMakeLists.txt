@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.7)
-project(retro-player-installer)
+project(retro-installer)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DCURL_STATICLIB -static-libstdc++ -static-libgcc -std=c++0x")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCURL_STATICLIB -static-libstdc++ -static-libgcc -std=c++0x")
@@ -18,8 +18,8 @@ file(
         ${CMAKE_SOURCE_DIR} ../../c++/*.h
 )
 
-add_executable(Play50hz-player ../../c++/main.cpp)
+add_executable(Pxl ../../c++/main.cpp)
 
 
-target_link_libraries(Play50hz-player ${CMAKE_SOURCE_DIR}/libarchive/linux64/lib/libarchive.a)
-target_link_libraries(Play50hz-player ${CMAKE_SOURCE_DIR}/zlib/linux64/lib/libz.a)
+target_link_libraries(Pxl ${CMAKE_SOURCE_DIR}/libarchive/linux64/lib/libarchive.a)
+target_link_libraries(Pxl ${CMAKE_SOURCE_DIR}/zlib/linux64/lib/libz.a)
