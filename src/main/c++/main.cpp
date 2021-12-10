@@ -96,7 +96,7 @@ std::string workingdir() {
 }
 
 int runApp() {
-    std::string cmd = "\"" + workingdir() +  "/" + javaFile + "\"" + " -jar play50hz-player.jar --enable-native-access=retro.player.application,be.yildizgames.retro.player.emulator.libretro";
+    std::string cmd = "\"" + workingdir() +  "/" + javaFile + "\"" + " -jar --add-modules=jdk.incubator.foreign --enable-native-access=ALL-UNNAMED play50hz-player.jar";
     return system(cmd.c_str());
 }
 	
