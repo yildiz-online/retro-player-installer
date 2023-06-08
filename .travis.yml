@@ -15,9 +15,6 @@ cache:
 services:
   - docker
 
-before_install:
-  - docker pull moussavdb/build-java-native-amd64
-
 script:
   - chmod 777 $PWD/src/main/scripts/linux64/build.sh
   - chmod 777 $PWD/src/main/scripts/win64/build.sh
