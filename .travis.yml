@@ -28,7 +28,4 @@ deploy:
     - "target/classes/win64/Pxl.exe"
     - "target/classes/linux64/Pxl"
   skip_cleanup: true
-  on:
-    branches:
-      only:
-        - jvm_vendor
+
