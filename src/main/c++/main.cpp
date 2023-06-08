@@ -24,7 +24,7 @@
 #elif _WIN32
     #include <winsock2.h>
 
-    const std::string javaUrl = std::string("http://files.yildiz-games.be/java_jre_win64.tar.gz");
+    const std::string javaUrl = std::string("https://download.bell-sw.com/java/19.0.2+9/bellsoft-jre19.0.2+9-windows-amd64.zip");
     const std::string javaVersionUrl = std::string("http://files.yildiz-games.be/release");
     const std::string javaFile = std::string("java/bin/java.exe");
 #endif
@@ -56,7 +56,8 @@ static int verbose = 0;
 int main () {
     logger.open("retro-player.log", std::ios::out | std::ios::trunc );
     print("Checking java availability");
-    if(!isFileExists(javaFile)) {
+	extract( "java.zip", 1, 0);
+   /* if(!isFileExists(javaFile)) {
 	    print("PXL has its own java virtual machine, different from the one you mave have already installed manually.");
         print("PXL java specific version not found, downloading it..");
         getJava();
@@ -74,7 +75,8 @@ int main () {
     downloadFile("play50hz-player.jar", "http://files.yildiz-games.be/play50hz/launcher/player-launcher.jar");
     print("Download latest version of the launcher complete.");	
     print("Starting PXL...");	
-    return runApp();
+    return runApp();*/
+	return 0;
 }
 
 void getJava() {
