@@ -6,7 +6,7 @@ git:
   depth: false
 
 dist:
-  xenial
+  focal
 
 cache:
   directories:
