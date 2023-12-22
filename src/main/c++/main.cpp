@@ -11,21 +11,21 @@
     #include <arpa/inet.h>
     #include <unistd.h>
 
-    const std::string javaUrl = std::string("http://files.yildiz-games.be/java_jre_linuxarm64.tar.gz");
-    const std::string javaVersionUrl = std::string("http://files.yildiz-games.be/release_linuxarm64");
+    const std::string javaUrl = std::string("https://files.yildiz-games.be/java_jre_linuxarm64.tar.gz");
+    const std::string javaVersionUrl = std::string("https://files.yildiz-games.be/release_linuxarm64");
     const std::string javaFile = std::string("java/bin/java");
 #elif __linux__
     #include <arpa/inet.h>
     #include <unistd.h>
 
-    const std::string javaUrl = std::string("http://files.yildiz-games.be/java_jre_linux64.tar.gz");
-    const std::string javaVersionUrl = std::string("http://files.yildiz-games.be/release_linux64");
+    const std::string javaUrl = std::string("https://files.yildiz-games.be/java_jre_linux64.tar.gz");
+    const std::string javaVersionUrl = std::string("https://files.yildiz-games.be/release_linux64");
     const std::string javaFile = std::string("java/bin/java");
 #elif _WIN32
     #include <winsock2.h>
 
-    const std::string javaUrl = std::string("http://files.yildiz-games.be/java_jre_win64.tar.gz");
-    const std::string javaVersionUrl = std::string("http://files.yildiz-games.be/release");
+    const std::string javaUrl = std::string("https://files.yildiz-games.be/java_jre_win64.tar.gz");
+    const std::string javaVersionUrl = std::string("https://files.yildiz-games.be/release");
     const std::string javaFile = std::string("java/bin/java.exe");
 #endif
 
@@ -71,7 +71,7 @@ int main () {
 	    }
     }
     print("Downloading latest version of the application...");
-    downloadFile("play50hz-player.jar", "http://files.yildiz-games.be/play50hz/launcher/player-launcher.jar");
+    downloadFile("play50hz-player.jar", "https://files.yildiz-games.be/play50hz/launcher/player-launcher.jar");
     print("Download latest version of the launcher complete.");	
     print("Starting PXL...");	
     return runApp();
