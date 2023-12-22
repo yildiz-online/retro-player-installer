@@ -5,7 +5,7 @@ language: generic
 git:
   depth: false
 
-dist: jammy
+dist: focal
 
 cache:
   directories:
