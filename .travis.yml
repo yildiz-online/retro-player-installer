@@ -1,11 +1,10 @@
-sudo: required
-
-language: generic
+language: minimal
 
 git:
   depth: false
 
-dist: focal
+os: linux
+dist: jammy
 
 cache:
   directories:
@@ -13,9 +12,6 @@ cache:
 
 services:
   - docker
-
-before_install:
-  - docker pull moussavdb/build-java-native
 
 script:
   - chmod 777 $PWD/src/main/scripts/linux64/build.sh
