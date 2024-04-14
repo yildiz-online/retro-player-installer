@@ -29,6 +29,10 @@
     const std::string javaFile = std::string("java/bin/java.exe");
 #endif
 
+const std::string launcherFile = std::string("play50hz-player.jar");
+
+const std::string launcherVersionUrl = std::string("http://files.yildiz-games.be/launcher-release");
+
 std::ofstream logger;
 
 void print(const std::string& message);
@@ -47,9 +51,9 @@ void warn(const char *f, const char *m);
 
 void fail(const char *f, const char *m, int r);
 
-static void	extract(const char *filename, int do_extract, int flags);
+static void extract(const char *filename, int do_extract, int flags);
 
-static int	copy_data(struct archive *, struct archive *);
+static int copy_data(struct archive *, struct archive *);
 
 static int verbose = 0;
 
@@ -57,22 +61,35 @@ int main () {
     logger.open("retro-player.log", std::ios::out | std::ios::trunc );
     print("Checking java availability");
     if(!isFileExists(javaFile)) {
-	    print("PXL has its own java virtual machine, different from the one you mave have already installed manually.");
+        print("PXL has its own java virtual machine, different from the one you mave have already installed manually.");
         print("PXL java specific version not found, downloading it..");
         getJava();
     } else {
         print("Java found, checking version...");    
         downloadFile("expected-release", javaVersionUrl);  
         if(!compareFiles("java/release", "expected-release")) {
-	        print("PXL java version not matching, downloading the latest one..."); 
+            print("PXL java version not matching, downloading the latest one..."); 
             getJava();
         } else { 
-	        print("Java version is correct.");	
-	    }
+            print("Java version is correct.");	
+        }
     }
-    print("Downloading latest version of the application...");
-    downloadFile("play50hz-player.jar", "http://files.yildiz-games.be/play50hz/launcher/player-launcher.jar");
-    print("Download latest version of the launcher complete.");	
+
+    print("Checking PXL launcher availability");
+    if(!isFileExists(launcherFile)) {
+        print("PXL launcher not found, downloading it...");
+        downloadFile(launcherFile, "http://files.yildiz-games.be/play50hz/launcher/player-launcher.jar");
+    } else {
+        print("PXL launcher found, checking version...");    
+        downloadFile("expected-launcher-release", launcherVersionUrl);  
+        if(!isFileExists("launcher-release") || !compareFiles("launcher-release", "expected-launcher-release")) {
+            print("PXL launcher version not matching, downloading the latest one..."); 
+            downloadFile(launcherFile, "http://files.yildiz-games.be/play50hz/launcher/player-launcher.jar");
+        } else { 
+            print("PXL launcher version is correct.");	
+        }
+    }
+
     print("Starting PXL...");	
     return runApp();
 }
@@ -131,75 +148,67 @@ static void extract(const char *filename, int do_extract, int flags) {
     struct archive_entry *entry;
     int r;
 
-	a = archive_read_new();
-	ext = archive_write_disk_new();
-	archive_write_disk_set_options(ext, flags);
+    a = archive_read_new();
+    ext = archive_write_disk_new();
+    archive_write_disk_set_options(ext, flags);
+    archive_read_support_format_tar(a);
 
-	archive_read_support_format_tar(a);
-
-	if (filename != NULL && strcmp(filename, "-") == 0)
-		filename = NULL;
-	if ((r = archive_read_open_filename(a, filename, 10240)))
-		fail("archive_read_open_filename()",
-		    archive_error_string(a), r);
-	for (;;) {
-		r = archive_read_next_header(a, &entry);
-		if (r == ARCHIVE_EOF)
-			break;
-		if (r != ARCHIVE_OK)
-			fail("archive_read_next_header()",
-			    archive_error_string(a), 1);
-		if (verbose && do_extract)
-			logger << "x ";
-		if (verbose || !do_extract)
-			logger << archive_entry_pathname(entry);
-		if (do_extract) {
-			r = archive_write_header(ext, entry);
-			if (r != ARCHIVE_OK)
-				warn("archive_write_header()",
-				    archive_error_string(ext));
-			else {
-				copy_data(a, ext);
-				r = archive_write_finish_entry(ext);
-				if (r != ARCHIVE_OK)
-					fail("archive_write_finish_entry()",
-					    archive_error_string(ext), 1);
-			}
-
-		}
-		if (verbose || !do_extract)
-			logger << std::endl;
-	}
-	archive_read_close(a);
-	archive_read_free(a);
-	
-	archive_write_close(ext);
-  	archive_write_free(ext);
+    if (filename != NULL && strcmp(filename, "-") == 0)
+        filename = NULL;
+    if ((r = archive_read_open_filename(a, filename, 10240)))
+        fail("archive_read_open_filename()", archive_error_string(a), r);
+    for (;;) {
+        r = archive_read_next_header(a, &entry);
+        if (r == ARCHIVE_EOF)
+            break;
+        if (r != ARCHIVE_OK)
+            fail("archive_read_next_header()", archive_error_string(a), 1);
+        if (verbose && do_extract)
+            logger << "x ";
+        if (verbose || !do_extract)
+            logger << archive_entry_pathname(entry);
+        if (do_extract) {
+            r = archive_write_header(ext, entry);
+            if (r != ARCHIVE_OK)
+                warn("archive_write_header()", archive_error_string(ext));
+            else {
+                copy_data(a, ext);
+                r = archive_write_finish_entry(ext);
+                if (r != ARCHIVE_OK)
+                    fail("archive_write_finish_entry()", archive_error_string(ext), 1);
+	    }
+        }
+        if (verbose || !do_extract)
+            logger << std::endl;
+    }
+    archive_read_close(a);
+    archive_read_free(a);
+    archive_write_close(ext);
+    archive_write_free(ext);
 }
 
 static int copy_data(struct archive *ar, struct archive *aw) {
-	int r;
-	const void *buff;
-	size_t size;
+    int r;
+    const void *buff;
+    size_t size;
 #if ARCHIVE_VERSION_NUMBER >= 3000000
-	int64_t offset;
+    int64_t offset;
 #else
-	off_t offset;
+    off_t offset;
 #endif
 
-	for (;;) {
-		r = archive_read_data_block(ar, &buff, &size, &offset);
-		if (r == ARCHIVE_EOF)
-			return (ARCHIVE_OK);
-		if (r != ARCHIVE_OK)
-			return (r);
-		r = archive_write_data_block(aw, buff, size, offset);
-		if (r != ARCHIVE_OK) {
-			warn("archive_write_data_block()",
-			    archive_error_string(aw));
-			return (r);
-		}
-	}
+    for (;;) {
+        r = archive_read_data_block(ar, &buff, &size, &offset);
+        if (r == ARCHIVE_EOF)
+            return (ARCHIVE_OK);
+        if (r != ARCHIVE_OK)
+            return (r);
+        r = archive_write_data_block(aw, buff, size, offset);
+        if (r != ARCHIVE_OK) {
+            warn("archive_write_data_block()", archive_error_string(aw));
+            return (r);
+        }
+    }
 }
 
 void warn(const char *f, const char *m) {
