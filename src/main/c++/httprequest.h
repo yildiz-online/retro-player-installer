@@ -27,6 +27,7 @@
 #  include <errno.h>
 #endif
 
+#include <iostream>
 #include <algorithm>
 #include <functional>
 #include <memory>
