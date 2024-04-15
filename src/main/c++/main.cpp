@@ -22,9 +22,6 @@
     const std::string javaVersionUrl = std::string("http://files.yildiz-games.be/release_linux64");
     const std::string javaFile = std::string("java/bin/java");
 #elif _WIN32
-    #include <windows.h>
-    #include <winsock2.h>
-
     const std::string javaUrl = std::string("http://files.yildiz-games.be/java_jre_win64.tar.gz");
     const std::string javaVersionUrl = std::string("http://files.yildiz-games.be/release");
     const std::string javaFile = std::string("java/bin/java.exe");
