@@ -1,10 +1,3 @@
-#include <string.h>
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <stdio.h>
-#include <archive.h>
-#include <archive_entry.h>
 #include "httprequest.h"
 
 #ifdef __aarch64__
@@ -26,6 +19,14 @@
     const std::string javaVersionUrl = std::string("http://files.yildiz-games.be/release");
     const std::string javaFile = std::string("java/bin/java.exe");
 #endif
+
+#include <string.h>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <stdio.h>
+#include <archive.h>
+#include <archive_entry.h>
 
 const std::string launcherFile = std::string("play50hz-player.jar");
 
