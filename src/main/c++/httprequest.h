@@ -5,18 +5,6 @@
 #ifndef HTTPREQUEST_HPP
 #define HTTPREQUEST_HPP
 
-#include <algorithm>
-#include <functional>
-#include <memory>
-#include <stdexcept>
-#include <system_error>
-#include <map>
-#include <string>
-#include <vector>
-#include <cctype>
-#include <cstddef>
-#include <cstdint>
-
 #ifdef _WIN32
 #  pragma push_macro("WIN32_LEAN_AND_MEAN")
 #  pragma push_macro("NOMINMAX")
@@ -38,6 +26,18 @@
 #  include <unistd.h>
 #  include <errno.h>
 #endif
+
+#include <algorithm>
+#include <functional>
+#include <memory>
+#include <stdexcept>
+#include <system_error>
+#include <map>
+#include <string>
+#include <vector>
+#include <cctype>
+#include <cstddef>
+#include <cstdint>
 
 namespace http
 {
