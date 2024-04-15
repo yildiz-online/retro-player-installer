@@ -5,6 +5,29 @@
 #ifndef HTTPREQUEST_HPP
 #define HTTPREQUEST_HPP
 
+#ifdef _WIN32
+#  pragma push_macro("WIN32_LEAN_AND_MEAN")
+#  pragma push_macro("NOMINMAX")
+#  ifndef WIN32_LEAN_AND_MEAN
+#    define WIN32_LEAN_AND_MEAN
+#  endif
+#  ifndef NOMINMAX
+#    define NOMINMAX
+#  endif
+#  include <winsock2.h>
+#  include <windows.h>
+#  include <ws2tcpip.h>
+#  pragma pop_macro("WIN32_LEAN_AND_MEAN")
+#  pragma pop_macro("NOMINMAX")
+#else
+#  include <sys/socket.h>
+#  include <netinet/in.h>
+#  include <netdb.h>
+#  include <unistd.h>
+#  include <errno.h>
+#endif
+
+#include <iostream>
 #include <algorithm>
 #include <functional>
 #include <memory>
@@ -16,27 +39,6 @@
 #include <cctype>
 #include <cstddef>
 #include <cstdint>
-
-#ifdef _WIN32
-#  pragma push_macro("WIN32_LEAN_AND_MEAN")
-#  pragma push_macro("NOMINMAX")
-#  ifndef WIN32_LEAN_AND_MEAN
-#    define WIN32_LEAN_AND_MEAN
-#  endif
-#  ifndef NOMINMAX
-#    define NOMINMAX
-#  endif
-#  include <winsock2.h>
-#  include <ws2tcpip.h>
-#  pragma pop_macro("WIN32_LEAN_AND_MEAN")
-#  pragma pop_macro("NOMINMAX")
-#else
-#  include <sys/socket.h>
-#  include <netinet/in.h>
-#  include <netdb.h>
-#  include <unistd.h>
-#  include <errno.h>
-#endif
 
 namespace http
 {
