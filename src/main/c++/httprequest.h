@@ -26,8 +26,8 @@
 #  ifndef NOMINMAX
 #    define NOMINMAX
 #  endif
-#  include <windows.h>
 #  include <winsock2.h>
+#  include <windows.h>
 #  include <ws2tcpip.h>
 #  pragma pop_macro("WIN32_LEAN_AND_MEAN")
 #  pragma pop_macro("NOMINMAX")
