@@ -112,7 +112,7 @@ std::string workingdir() {
 }
 
 int runApp() {
-    std::string cmd = "\"" + workingdir() +  "/" + javaFile + "\"" + " -jar --enable-native-access=be.yildizgames.module.compression.sevenzip,be.yildizgames.module.controller.sdl,be.yildizgames.retro.player.emulator play50hz-player.jar";
+    std::string cmd = "\"" + workingdir() +  "/" + javaFile + "\"" + " -jar --enable-native-access=ALL-UNNAMED,be.yildizgames.module.compression.sevenzip,be.yildizgames.module.controller.sdl,be.yildizgames.retro.player.emulator play50hz-player.jar";
     return system(cmd.c_str());
 }
 	
