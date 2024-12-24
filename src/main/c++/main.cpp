@@ -112,7 +112,7 @@ std::string workingdir() {
 }
 
 int runApp() {
-    std::string cmd = "\"" + workingdir() +  "/" + javaFile + "\"" + "--enable-native-access=ALL-UNNAMED --add-opens javafx.graphics/javafx.scene.layout=be.yildizgames.module.window.javafx --add-opens javafx.graphics/javafx.scene.layout=ALL_UNNAMED -jar play50hz-player.jar";
+    std::string cmd = "\"" + workingdir() +  "/" + javaFile + "\"" + " --enable-native-access=ALL-UNNAMED --add-opens javafx.graphics/javafx.scene.layout=be.yildizgames.module.window.javafx --add-opens javafx.graphics/javafx.scene.layout=ALL_UNNAMED -jar play50hz-player.jar";
     return system(cmd.c_str());
 }
 	
