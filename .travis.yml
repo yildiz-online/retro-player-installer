@@ -18,7 +18,13 @@ script:
   - chmod 777 $PWD/src/main/scripts/win64/build.sh
   - chmod 777 $PWD/package.sh
   - travis_retry docker run -v $PWD:/src -v $HOME/.m2:/root/.m2 moussavdb/build-java-native package.sh
-  
+
+before_deploy:
+  - yes | gem update --system --force
+  - gem install bundler
+  - gem install uri
+  - gem install logger
+
 deploy:
   provider: releases
   api_key: "$GITHUB_TOKEN"
