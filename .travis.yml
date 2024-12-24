@@ -20,7 +20,7 @@ script:
   - travis_retry docker run -v $PWD:/src -v $HOME/.m2:/root/.m2 moussavdb/build-java-native package.sh
 
 before_deploy:
-  - git tag $GIT_TAG -a -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
+  - git tag -a -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
   - yes | gem update --system --force
   - gem install bundler
   - gem install faraday-net_http -v '3.3.0' # Fix faraday version
