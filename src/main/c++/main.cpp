@@ -112,7 +112,7 @@ std::string workingdir() {
 }
 
 int runApp() {
-    std::string cmd = "\"" + workingdir() +  "/" + javaFile + "\"" + " --enable-native-access=ALL-UNNAMED --add-opens javafx.graphics/javafx.scene.layout=ALL-UNNAMED -jar play50hz-player.jar";
+    std::string cmd = "\"" + workingdir() +  "/" + javaFile + "\"" + " --enable-native-access=ALL-UNNAMED,be.yildizgames.retro.player.emulator,retro.player.application,be.yildizgames.module.controller.sdl --add-opens javafx.graphics/javafx.scene.layout=ALL-UNNAMED -jar play50hz-player.jar";
     return system(cmd.c_str());
 }
 	
